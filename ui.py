@@ -16,11 +16,11 @@ class ScoreApp:
     def setup_start_screen(self):
         self.clear_frame()
 
-        tk.Label(self.root, text="Player 1 Name").pack()
+        tk.Label(self.root, text="Player 1 Name (ATTACKER)").pack()
         self.p1_entry = tk.Entry(self.root)
         self.p1_entry.pack()
 
-        tk.Label(self.root, text="Player 2 Name").pack()
+        tk.Label(self.root, text="Player 2 Name (DEFENDER)").pack()
         self.p2_entry = tk.Entry(self.root)
         self.p2_entry.pack()
 
@@ -63,9 +63,9 @@ class ScoreApp:
         tk.Button(self.root, text="Next Turn", command=self.next_turn).pack(pady=10)
         tk.Button(self.root, text="Show Final Score", command=self.show_scores).pack()
 
-        self.root.deiconify()    # Make sure window isn't minimized
-        self.root.lift()         # Bring window to front
-        self.root.focus_force()  # Focus window
+        self.root.deiconify()    
+        self.root.lift()         
+        self.root.focus_force()
 
     def next_turn(self):
         for i, player in enumerate(self.players):
@@ -78,7 +78,7 @@ class ScoreApp:
             self.turn += 1
             self.build_score_ui()
         else:
-            messagebox.showinfo("Game Over", "Reached turn 5.")
+            messagebox.showinfo("Game Over", "There are only 5 turns in Warhammer 40,000")
             self.show_scores()
 
     def show_scores(self):
