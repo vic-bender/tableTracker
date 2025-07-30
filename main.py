@@ -77,6 +77,10 @@ class ScoreApp:
         tk.Button(self.root, text="Next Turn", command=self.next_turn).pack(pady=10)
         tk.Button(self.root, text="Show Final Score", command=self.show_scores).pack()
 
+        self.root.deiconify()    # Make sure window isn't minimized
+        self.root.lift()         # Bring window to front
+        self.root.focus_force()  # Focus window
+
     def next_turn(self):
         for i, player in enumerate(self.players):
             score = self.score_vars[i].get()
