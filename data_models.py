@@ -1,4 +1,6 @@
-class Player:
+import math #functional import
+
+class Player: # all of the player info
     def __init__(self, name):
         self.name = name
         self.primary_scores = [0] * 5

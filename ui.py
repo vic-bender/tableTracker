@@ -1,10 +1,10 @@
-import tkinter as tk
+import tkinter as tk #UI Import
 from tkinter import messagebox
 
-from data_models import Player
+from data_models import Player # data import
 
 class ScoreApp:
-    def __init__(self, root):
+    def __init__(self, root): # setup
         self.root = root
         self.root.title("Victor's TableTracker")
 
@@ -13,7 +13,7 @@ class ScoreApp:
 
         self.setup_start_screen()
 
-    def setup_start_screen(self):
+    def setup_start_screen(self): # start screen
         self.clear_frame()
 
         tk.Label(self.root, text="Player 1 Name (ATTACKER)").pack()
@@ -26,7 +26,7 @@ class ScoreApp:
 
         tk.Button(self.root, text="Start Game", command=self.start_game).pack(pady=10)
 
-    def start_game(self):
+    def start_game(self): 
         p1 = self.p1_entry.get().strip()
         p2 = self.p2_entry.get().strip()
 
