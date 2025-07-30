@@ -1,0 +1,14 @@
+class Player:
+    def __init__(self, name):
+        self.name = name
+        self.primary_scores = [0] * 5
+        self.secondaries = [0, 0, 0]
+
+    def total_primary(self):
+        return sum(self.primary_scores)
+
+    def total_secondary(self):
+        return sum(self.secondaries)
+
+    def total_score(self):
+        return self.total_primary() + self.total_secondary()
