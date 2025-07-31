@@ -7,7 +7,7 @@ class Player: # all of the player info
         self.primary_scores = [0] * 5
         self.secondaries = [0, 0, 0]
 
-        self.cp = 1
+        self.cp = 0
 
     def use_cp(self):
         if self.cp > 0:
