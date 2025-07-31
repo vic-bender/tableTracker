@@ -11,6 +11,9 @@ class ScoreApp:
         self.turn = 1
         self.players = []
 
+        self.current_phase_index = 0  # 0 for attacker, 1 for defender
+        self.max_turns = 5
+
         self.setup_start_screen()
 
     def setup_start_screen(self): # start screen
@@ -63,7 +66,7 @@ class ScoreApp:
         tk.Button(self.root, text="Next Turn", command=self.next_turn).pack(pady=10)
         tk.Button(self.root, text="Show Final Score", command=self.show_scores).pack()
 
-        self.root.deiconify()    
+        self.root.deiconify() # fix for disappearing windows
         self.root.lift()         
         self.root.focus_force()
 

@@ -1,4 +1,4 @@
-import tkinter as tk #UI import
+import tkinter as tk
 from tkinter import messagebox
 
 from ui import ScoreApp #UI import
