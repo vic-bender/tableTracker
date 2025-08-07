@@ -8,28 +8,28 @@
 import SwiftUI
 
 struct Player {
-    var name: String
+    var name: String // variable setup
     var primaryPoints: Int = 0
     var secondaryPoints: Int = 0
-    var commandPoints: Int = 1  // Start with 1 CP
+    var commandPoints: Int = 1
+    
     var totalPoints: Int {
         primaryPoints + secondaryPoints
     }
 }
 
 struct ContentView: View {
-    @State private var attackerName: String = ""
+    @State private var attackerName: String = "" // variable setup
     @State private var defenderName: String = ""
     @State private var gameStarted = false
     @State private var gameEnded = false
 
-    @State private var attacker = Player(name: "")
+    @State private var attacker = Player(name: "") // variables for the whole game / start
     @State private var defender = Player(name: "")
     @State private var turn = 1
     @State private var currentPhase = "Attacker"
 
-    // Turn-based inputs (reset each turn)
-    @State private var attackerTurnPrimary = 0
+    @State private var attackerTurnPrimary = 0 // turn-based inputs (reset each turn)
     @State private var attackerTurnSecondary = 0
     @State private var defenderTurnPrimary = 0
     @State private var defenderTurnSecondary = 0
@@ -37,8 +37,8 @@ struct ContentView: View {
     var body: some View {
         VStack {
             if !gameStarted {
-                VStack {
-                    Text("tableTracker v1.9.1")
+                VStack { // start screen
+                    Text("tableTracker v1.9.2")
                         .font(.title)
                     Text("Simple, Free Wargaming")
                     TextField("Attacker Name", text: $attackerName)
@@ -55,7 +55,7 @@ struct ContentView: View {
                 }
                 .padding()
             } else if gameEnded {
-                VStack(spacing: 20) {
+                VStack(spacing: 20) { // end of game screen
                     Text("End of Game")
                         .font(.largeTitle)
                     Text("5 turns elapsed")
@@ -77,7 +77,7 @@ struct ContentView: View {
                     }
                 }
             } else {
-                VStack {
+                VStack { // screen for turns / phases
                     Text("Turn \(turn): \(currentPhase)'s Phase")
                         .font(.headline)
 
@@ -129,7 +129,6 @@ struct ContentView: View {
 
                     HStack {
                         Button("Next Phase") {
-                            // Add CP to both players
                             attacker.commandPoints += 1
                             defender.commandPoints += 1
 
@@ -139,13 +138,11 @@ struct ContentView: View {
                                 currentPhase = "Attacker"
                                 turn += 1
 
-                                // Commit the visible turn scores to each player
                                 attacker.primaryPoints += attackerTurnPrimary
                                 attacker.secondaryPoints += attackerTurnSecondary
                                 defender.primaryPoints += defenderTurnPrimary
                                 defender.secondaryPoints += defenderTurnSecondary
 
-                                // Reset turn-based values for next turn
                                 attackerTurnPrimary = 0
                                 attackerTurnSecondary = 0
                                 defenderTurnPrimary = 0
@@ -167,7 +164,7 @@ struct ContentView: View {
 }
 
 @main
-struct tableTrackerApp: App {
+struct tableTrackerApp: App { // thing that makes the app go round
     var body: some Scene {
         WindowGroup {
             ContentView()
