@@ -1,5 +1,5 @@
 //
-//  tableTrackerApp.swift
+//
 //  tableTracker
 //
 //  Created by vic bender on 8/2/25.

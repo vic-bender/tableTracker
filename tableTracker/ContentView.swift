@@ -1,10 +1,3 @@
-//
-//  ContentView.swift
-//  tableTracker
-//
-//  Created by vic bender on 8/7/25.
-//
-
 import SwiftUI
 
 struct ContentView: View {
@@ -16,18 +9,25 @@ struct ContentView: View {
     @State private var attacker = Player(name: "") // variables for the whole game / start
     @State private var defender = Player(name: "")
     @State private var turn = 1
-    @State private var currentPhase = "Attacker"
 
-    @State private var attackerTurnPrimary = 0 // turn-based inputs (reset each turn)
-    @State private var attackerTurnSecondary = 0
-    @State private var defenderTurnPrimary = 0
-    @State private var defenderTurnSecondary = 0
+    // use optional Ints for blank reset
+    @State private var attackerTurnPrimary: Int? = nil
+    @State private var attackerTurnSecondary: Int? = nil
+    @State private var defenderTurnPrimary: Int? = nil
+    @State private var defenderTurnSecondary: Int? = nil
+
+    // formatter for numeric input
+    private var numberFormatter: NumberFormatter {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .none
+        return formatter
+    }
 
     var body: some View {
         VStack {
             if !gameStarted {
                 VStack { // start screen
-                    Text("tableTracker v1.10.1")
+                    Text("tableTracker v1.11.3")
                         .font(.title)
                     Text("Simple, Free Wargaming")
                     TextField("Attacker Name", text: $attackerName)
@@ -58,17 +58,35 @@ struct ContentView: View {
                         attacker = Player(name: "")
                         defender = Player(name: "")
                         turn = 1
-                        currentPhase = "Attacker"
-                        attackerTurnPrimary = 0
-                        attackerTurnSecondary = 0
-                        defenderTurnPrimary = 0
-                        defenderTurnSecondary = 0
+                        attackerTurnPrimary = nil
+                        attackerTurnSecondary = nil
+                        defenderTurnPrimary = nil
+                        defenderTurnSecondary = nil
                     }
                 }
             } else {
-                VStack { // screen for turns / phases
-                    Text("Turn \(turn): \(currentPhase)'s Phase")
-                        .font(.headline)
+                VStack(spacing: 20) { // game screen
+                    HStack {
+                        VStack {
+                            Text(attacker.name)
+                                .font(.headline)
+                            Text("\(attacker.totalPoints) pts")
+                                .font(.subheadline)
+                        }
+                        Spacer()
+                        Text("Turn \(turn)")
+                            .font(.title3)
+                        Spacer()
+                        VStack {
+                            Text(defender.name)
+                                .font(.headline)
+                            Text("\(defender.totalPoints) pts")
+                                .font(.subheadline)
+                        }
+                    }
+                    .padding()
+                    .background(Color.gray.opacity(0.1))
+                    .cornerRadius(10)
 
                     VStack {
                         VStack {
@@ -76,18 +94,19 @@ struct ContentView: View {
                                 .font(.title2)
 
                             VStack {
-                                Text("Primary Points (This Turn)")
-                                Stepper(value: $attackerTurnPrimary, in: 0...100) {
-                                    Text("\(attackerTurnPrimary)")
-                                }
-                                Text("Secondary Points (This Turn)")
-                                Stepper(value: $attackerTurnSecondary, in: 0...100) {
-                                    Text("\(attackerTurnSecondary)")
-                                }
+                                TextField("Primary Points", value: $attackerTurnPrimary, formatter: numberFormatter)
+                                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                                    .keyboardType(.numberPad)
+                                    .padding(.vertical, 4)
+
+                                TextField("Secondary Points", value: $attackerTurnSecondary, formatter: numberFormatter)
+                                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                                    .keyboardType(.numberPad)
+                                    .padding(.vertical, 4)
+
                                 Stepper(value: $attacker.commandPoints, in: 0...1000) {
                                     Text("Command Points: \(attacker.commandPoints)")
                                 }
-                                Text("Total Score: \(attacker.totalPoints)")
                             }
                             .padding()
                         }
@@ -99,44 +118,37 @@ struct ContentView: View {
                                 .font(.title2)
 
                             VStack {
-                                Text("Primary Points (This Turn)")
-                                Stepper(value: $defenderTurnPrimary, in: 0...100) {
-                                    Text("\(defenderTurnPrimary)")
-                                }
-                                Text("Secondary Points (This Turn)")
-                                Stepper(value: $defenderTurnSecondary, in: 0...100) {
-                                    Text("\(defenderTurnSecondary)")
-                                }
+                                TextField("Primary Points", value: $defenderTurnPrimary, formatter: numberFormatter)
+                                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                                    .keyboardType(.numberPad)
+                                    .padding(.vertical, 4)
+
+                                TextField("Secondary Points", value: $defenderTurnSecondary, formatter: numberFormatter)
+                                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                                    .keyboardType(.numberPad)
+                                    .padding(.vertical, 4)
+
                                 Stepper(value: $defender.commandPoints, in: 0...1000) {
                                     Text("Command Points: \(defender.commandPoints)")
                                 }
-                                Text("Total Score: \(defender.totalPoints)")
                             }
                             .padding()
                         }
                     }
 
                     HStack {
-                        Button("Next Phase") {
-                            attacker.commandPoints += 1
-                            defender.commandPoints += 1
+                        Button("Next Turn") { // Update totals at the end of each turn
+                            attacker.primaryPoints += attackerTurnPrimary ?? 0
+                            attacker.secondaryPoints += attackerTurnSecondary ?? 0
+                            defender.primaryPoints += defenderTurnPrimary ?? 0
+                            defender.secondaryPoints += defenderTurnSecondary ?? 0
 
-                            if currentPhase == "Attacker" {
-                                currentPhase = "Defender"
-                            } else {
-                                currentPhase = "Attacker"
-                                turn += 1
+                            attackerTurnPrimary = nil
+                            attackerTurnSecondary = nil
+                            defenderTurnPrimary = nil
+                            defenderTurnSecondary = nil
 
-                                attacker.primaryPoints += attackerTurnPrimary
-                                attacker.secondaryPoints += attackerTurnSecondary
-                                defender.primaryPoints += defenderTurnPrimary
-                                defender.secondaryPoints += defenderTurnSecondary
-
-                                attackerTurnPrimary = 0
-                                attackerTurnSecondary = 0
-                                defenderTurnPrimary = 0
-                                defenderTurnSecondary = 0
-                            }
+                            turn += 1
 
                             if turn > 5 {
                                 gameEnded = true
