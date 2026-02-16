@@ -10,7 +10,7 @@ struct ContentView: View {
     @State private var defender = Player(name: "")
     @State private var turn = 1
 
-    // use optional Ints for blank reset
+    // use optional ints for blank reset
     @State private var attackerTurnPrimary: Int? = nil
     @State private var attackerTurnSecondary: Int? = nil
     @State private var defenderTurnPrimary: Int? = nil
